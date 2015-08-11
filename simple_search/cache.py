@@ -32,8 +32,11 @@ class BasicCachingQueryset(QuerySet):
         return instance
 
 class BasicCachingManager(models.Manager):
-    def get_query_set(self):
+    def get_queryset(self):
         return BasicCachingQueryset(self.model, using=self._db)
+
+    if django.VERSION < (1, 6):
+         get_query_set = get_queryset
 
 class BasicCachedModel(models.Model):
     objects = BasicCachingManager()
